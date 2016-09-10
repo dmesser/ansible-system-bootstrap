@@ -1,0 +1,18 @@
+---
+
+- name: install performance and troubleshooting tooling
+  package: name={{ item }} state=present
+  with_items:
+      - sysstat
+      - dstat
+      - htop
+      - iptraf-ng
+      - iotop
+      - iftop
+      - tcpdump
+      - nmon
+      - numactl
+      - strace
+      - blktrace
+
+...

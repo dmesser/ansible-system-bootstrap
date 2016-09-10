@@ -1,0 +1,6 @@
+---
+
+- name: install hplib
+  yum: name=hplip state=present
+
+...

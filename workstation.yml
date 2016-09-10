@@ -1,0 +1,9 @@
+---
+
+- hosts: sut
+  roles:
+        - { name: base-system, tags: base-system }
+        - { name: virtualization-host, tags: virtualization-host }
+        - { name: workstation, tags: workstation }
+
+...

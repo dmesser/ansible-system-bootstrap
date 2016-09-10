@@ -1,0 +1,31 @@
+---
+
+- include: ./prerequisites/rhel_prerequisites.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution == "RHEL"
+
+- include: ./prerequisites/fedora_prerequisites.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
+
+- name: install basic packages
+  package: name={{ item }} state=present
+  with_items:
+      - wget
+      - curl
+      - vim
+      - bash-completion
+      - NetworkManager
+      - bind-utils
+      - procps-ng
+      - net-tools
+
+- include: perf-utilities.yml
+  when: 
+    - perf_utilities is defined
+    - perf_utilities
+
+- include: cli-environment.yml
+  when: 
+    - cli_environment is defined
+    - cli_environment
+
+...

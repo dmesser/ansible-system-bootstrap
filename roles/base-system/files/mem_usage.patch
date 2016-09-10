@@ -1,0 +1,52 @@
+--- mem_usage.py	2016-09-10 18:03:54.034275436 +0200
++++ my_mem_usage.py	2016-09-10 18:03:35.396039962 +0200
+@@ -18,23 +18,45 @@
+     return "%.1f%s%s" % (num, 'Yi', suffix)
+ 
+ def _get_mem_used(mem_data, mem_type):
+-    mem_used = getattr(mem_data, mem_type, None)
+-    if mem_used is None:
++    if mem_type == 'total_used':
++        mem_used = (mem_data.total - mem_data.available)
++    elif mem_type is None:
+         mem_used = mem_data.used
++    else:
++        mem_used = getattr(mem_data, mem_type, None)
+     return mem_used
+ 
+-def mem_usage(pl, format="%s/%s", mem_type='used'):
++def _get_swap_used(swap_data, swap_type):
++    swap_used = getattr(swap_data, swap_type, None)
++    if swap_used is None:
++        swap_used = swap_data.used
++    return swap_used
++
++
++def mem_usage(pl, format="%s", mem_type='used'):
+     mem_data = psutil.virtual_memory()
+     mem_used = _get_mem_used(mem_data, mem_type)
+     mem_percentage = (float(mem_used) / mem_data.total) * 100
+     return [
+         {
+-            'contents': format % (_sizeof_fmt(mem_used), _sizeof_fmt(mem_data.total)),
++            'contents': format % (_sizeof_fmt(mem_used)),
+             'gradient_level': mem_percentage,
+             'highlight_groups': ['mem_usage_gradient', 'mem_usage']
+         }
+     ]
+ 
++def swap_usage(pl, format="%s", swap_type='used'):
++    swap_data = psutil.swap_memory()
++    swap_used = _get_swap_used(swap_data, swap_type)
++    swap_percentage = (float(swap_used) / swap_data.total) * 100
++    return [
++        {
++            'contents': format % (_sizeof_fmt(swap_used)),
++            'gradient_level': swap_percentage,
++            'highlight_groups': ['swap_usage_gradient', 'swap_usage']
++        }
++    ]
++
+ def mem_usage_percent(pl, format="%d%%", mem_type='used'):
+     mem_data = psutil.virtual_memory()
+     mem_used = _get_mem_used(mem_data, mem_type)

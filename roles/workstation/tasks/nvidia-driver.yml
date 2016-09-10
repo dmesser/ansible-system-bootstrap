@@ -1,0 +1,37 @@
+---
+
+- name: determine current runlevel
+  shell: systemctl is-active graphical.target
+  register: runlevel
+
+- name: check current runlevel / systemd.target
+  fail: msg="Current runlevel not suitable for nvidia driver installation, deactivate graphical environment"
+  when: runlevel.stdout == 'active'
+
+- name: install nvdia driver pre-requisites packages
+  yum: name={{ item }} state=present
+  with_items:
+      - kernel-devel
+      - kernel-headers
+      - gcc
+      - dkms
+      - acpid
+
+- name: remove noveau driver
+  yum: name=xorg-x11-drv-nouveau state=absent
+
+- name: copy nvidia driver installer to /tmp
+  copy: src=NVIDIA-Linux-x86_64-367.27.run dest=/tmp
+
+- name: run nvidia driver installer
+  shell: /tmp/NVIDIA-Linux-x86_64-367.27 --dkms --run-nvidia-xconfig --disable-nouveau --force-update --silent
+
+
+- name: install vdpau
+  yum: name={{ item }} state=present
+  with_items:
+      - vdpauinfo
+      - libva-vdpau-driver
+      - libva-utils
+
+...

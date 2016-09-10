@@ -1,0 +1,4 @@
+---
+
+- name: install tmux on fedora
+  package: name=tmux state=present

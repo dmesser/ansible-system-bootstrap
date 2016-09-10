@@ -1,0 +1,10 @@
+---
+
+- name: install ansible python dependencies on fedora
+  raw: dnf -y install python2 python-simplejson python2-dnf libselinux-python
+
+- name: install ansible dependencies on fedora
+  package: name={{ item }} state=present
+  with_items:
+   - git
+   - patch

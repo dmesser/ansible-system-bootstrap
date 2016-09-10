@@ -1,0 +1,18 @@
+---
+
+- name: create logical volume group for SSD storage
+  lvg: vg=ssd pvs="{{ worktation_ssd_list }}" state=present
+
+- name: logical volume for SSD storage
+  lvol: lv=data vg=ssd size=100%VG state=present
+
+- name: create filesystem for SSD storage
+  filesystem: dev=/dev/ssd/data fstype=xfs
+
+- name: mount filesystem for SSD storage for libvirt
+  mount: src=/dev/ssd/data name=/var/lib/libvirt/images/ssd state=mounted
+
+- name: ensure filesystem for NVME storage for libvirt
+  file: name=/var/lib/libvirt/images/nvme state=directory mode=0755 owner=qemu group=qemu setype=virt_image_t
+
+...

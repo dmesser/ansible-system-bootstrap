@@ -1,0 +1,14 @@
+---
+
+- name: configure network adapter profile for {{ workstation_primary_netif }}
+  nmcli:
+    ifname: "{{ workstation_primary_netif }}"
+    conn_name: "{{ workstation_primary_netif }}"
+    ip4: "{{ workstation_primary_cidr }}"
+    dns4: "{{ workstation_primary_dns }}"
+    gw4: "{{ workstation_primary_gw }}"
+    type: ethernet
+    autoconnect: true
+    state: present
+
+...

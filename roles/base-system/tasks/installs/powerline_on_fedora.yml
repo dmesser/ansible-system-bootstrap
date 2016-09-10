@@ -1,0 +1,30 @@
+---
+
+- name: install powerline on fedora
+  package: name=powerline state=present
+        
+- name: install tmux-powerline on fedora
+  package: name=tmux-powerline state=present
+
+- name: install vim-powerline on fedora
+  package: name=vim-powerline state=present
+
+- name: download powerline fonts
+  git: repo=https://github.com/powerline/fonts.git dest=/tmp/powerline-fonts
+
+- name: install powerline fonts
+  shell: find /tmp/powerline-fonts \( -name '*.[o,t]tf' -or -name '*.pcf.gz' \) -type f -print0 | xargs -0 -I % cp '%' '/usr/share/fonts'
+
+- name: delete powerline fonts tmp directory
+  file: name=/tmp/powerline-fonts  state=absent
+
+- name: update font cache
+  shell: fc-cache -f
+
+- name: install powerline-mem-segment dependencies on fedora
+  package: name={{ item }} state=present
+  with_items:
+    - python3-psutil
+
+- name: install powerline-mem-segment on fedora
+  pip: name=powerline-mem-segment state=present extra_args='--no-deps' executable=pip3 

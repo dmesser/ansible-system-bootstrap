@@ -1,0 +1,11 @@
+---
+
+- include: ./nvidia-driver.yml
+  when: install_nvidia_driver is defined and install_nvidia_driver is true
+
+- include: ./hplip-driver.yml
+  when: install_hplip_driver is defined and install_hplip_driver is true
+
+- include: network-config.yml
+
+...
