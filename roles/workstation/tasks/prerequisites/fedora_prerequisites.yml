@@ -1,0 +1,6 @@
+---
+
+- name: install ansible python dependencies on fedora
+  raw: dnf -y install dbus-python NetworkManager-glib
+
+...

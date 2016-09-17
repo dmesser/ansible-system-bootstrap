@@ -1,10 +1,33 @@
 ---
 
+- include: ./prerequisites/fedora_prerequisites.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
+
 - include: ./nvidia-driver.yml
-  when: install_nvidia_driver is defined and install_nvidia_driver is true
+  when: 
+    - nvidia_driver is defined
+    - nvidia_driver
 
 - include: ./hplip-driver.yml
-  when: install_hplip_driver is defined and install_hplip_driver is true
+  when: 
+    - hplip_driver is defined
+    - hplip_driver
+
+- include: ./py-charm.yml
+  when: 
+    - py_charm is defined
+    - py_charm
+
+
+- include: ./sublime.yml
+  when: 
+    - sublime is defined
+    - sublime
+
+- include: ./google-chrome.yml
+  when: 
+    - google_chrome is defined
+    - google_chrome
 
 - include: network-config.yml
 

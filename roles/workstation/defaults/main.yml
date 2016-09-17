@@ -1,0 +1,17 @@
+---
+
+workstation_primary_netif: eno1
+workstation_primary_cidr: 192.168.178.8/24
+workstation_primary_dns: 8.8.8.8
+workstation_primary_gw: 192.168.178.1
+
+pycharm_install_root: /opt/pycharm
+sublime_install_root: /opt/sublime
+
+nvidia_driver: false
+hplip_driver: true
+py_charm: true
+sublime: true
+google_chrome: true
+
+...
