@@ -9,6 +9,7 @@
     - workstation_primary_cidr: 192.168.100.80/24
     - workstation_primary_gw: 192.168.100.1
     - workstation_primary_netif: ens3
+    - ansible_playbook_root: /home/dmesser/Documents
   roles:
         - { name: base-system, tags: base-system }
         - { name: virtualization-host, tags: virtualization-host }
