@@ -1,11 +1,5 @@
 ---
 
-- include: ./prerequisites/rhel_prerequisites.yml
-  when: ansible_os_family == "RedHat" and ansible_distribution == "RHEL"
-
-- include: ./prerequisites/fedora_prerequisites.yml
-  when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
-
 - name: install basic packages
   package: name={{ item }} state=present
   with_items:

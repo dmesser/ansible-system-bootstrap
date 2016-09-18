@@ -1,0 +1,8 @@
+---
+
+- name: relabel docker volume
+  shell: restorecon -R /var/lib/docker
+
+- name: restart docker
+  service: name=docker state=restarted
+...

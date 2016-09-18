@@ -1,0 +1,9 @@
+---
+
+- name: install docker on fedora
+  package: name=docker state=present
+
+- name: disable default storage setup
+  lineinfile: dest=/etc/sysconfig/docker-storage-setup line=STORAGE_DRIVER=""
+
+...

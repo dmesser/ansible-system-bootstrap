@@ -6,13 +6,17 @@
     - perf_utilities: true
     - sublime: false
     - py_charm: false
-    - workstation_primary_cidr: 192.168.100.80/24
+    - workstation_primary_cidr: 192.168.100.158/24
     - workstation_primary_gw: 192.168.100.1
     - workstation_primary_netif: ens3
     - ansible_playbook_root: /home/dmesser/Documents
+    - container_deployment_scenario: docker_on_btrfs
+    - btrfs_docker_device: /dev/vdd
+    - dm_docker_device: /dev/vdd
   roles:
         - { name: base-system, tags: base-system }
         - { name: virtualization-host, tags: virtualization-host }
         - { name: workstation, tags: workstation }
+        - { name: container-host, tags: container-host }
 
 ...

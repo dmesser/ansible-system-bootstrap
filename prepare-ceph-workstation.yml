@@ -1,11 +1,11 @@
 ---
 
-- hosts: localhost
+- hosts: sut
   vars:
-    playbook_root: "{{ playbook_dir }}/../"
+    playbook_root: "/root"
     ceph_ansible_directory: "{{ playbook_root }}/ceph-ansible"
-    ceph_host: 192.168.100.180
-    ceph_frontend: 192.168.100.180
+    ceph_host: 192.168.100.158
+    ceph_frontend: 192.168.100.158
     ceph_subnet: 24
     ceph_interface: ens3
     ceph_disks:
@@ -14,7 +14,7 @@
 
   tasks:
 
-  - name: check-out ceph-ansible into {{ playbook_root }}
+  - name: check-out ceph-ansible into {{ ceph_ansible_directory }}
     git: 
       repo: https://github.com/ceph/ceph-ansible.git
       dest: "{{ceph_ansible_directory}}"

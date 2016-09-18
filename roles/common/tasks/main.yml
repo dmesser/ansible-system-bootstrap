@@ -1,0 +1,10 @@
+---
+
+- include: ./installs/rhel_prerequisites.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution == "RHEL"
+
+- include: ./installs/fedora_prerequisites.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
+
+
+...

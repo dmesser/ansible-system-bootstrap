@@ -1,0 +1,50 @@
+---
+
+- name: enable btrfs module on boot
+  lineinfile:
+    dest: /etc/modules-load.d/btrfs.conf
+    line: btrfs
+    create: yes
+
+- name: load btrfs module
+  shell: modprobe btrfs
+
+- name: install btrfs tools on fedora
+  package: name=btrfs-progs state=present
+
+- name: make sure a block device for btrfs was chosen
+  fail:
+   msg: "please choose an block device for dockers btrfs volume"
+  when: btrfs_docker_device is not defined
+
+- name: check if {{ btrfs_docker_device }} is mounted
+  shell: cat /proc/mounts | grep {{ btrfs_docker_device }}
+  ignore_errors: true
+  register: device_mounted
+
+- name: format block device with btrfs
+  shell: mkfs.btrfs --label BTRFS_DOCKER -f {{ btrfs_docker_device }}
+  when: device_mounted.rc == 1
+
+- name: create mount directory for docker volumes
+  file: path=/var/lib/docker state=directory
+
+- name: create mount point & mount docker volumes
+  mount:
+    name: /var/lib/docker
+    src: LABEL=BTRFS_DOCKER
+    fstype: btrfs
+    opts: ssd
+    state: mounted
+  notify:
+    - relabel docker volume
+
+- name: change docker storage driver to btrfs
+  lineinfile:
+    dest: /etc/sysconfig/docker
+    line: OPTIONS='--selinux-enabled --log-driver=journald --storage-driver=btrfs'
+    regexp: '^OPTIONS\=.*'
+  notify:
+    - restart docker
+
+...
