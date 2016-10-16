@@ -1,12 +1,16 @@
 ---
 
 - hosts: sut
+  roles:
+    - container-host
+    - kolla-aio
   become: true
   become_method: sudo
   vars:
     playbook_root: "/root"
     kolla_ansible_directory: "{{ playbook_root }}/kolla-ansible"
     kolla_host: 192.168.100.158
+    kolla_external_if: eno1
 
   tasks:
 
@@ -15,16 +19,5 @@
       repo: https://github.com/openstack/kolla.git
       dest: "{{ kolla_ansible_directory }}"
       force: yes
-
-  - name: install kolla pip build dependencies
-    package: name={{ item }} state=present
-    with_items:
-      - gcc
-      - python-devel
-      - redhat-rpm-config
-
-  - name: install kolla dependencies using pip
-    pip: requirements="{{ kolla_ansible_directory }}/requirements.txt" state=present
-
  
 ...

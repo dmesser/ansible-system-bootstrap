@@ -1,0 +1,16 @@
+<network connections='1'>
+  <name>external</name>
+  <forward dev='{{ kolla_external_if }}' mode='nat'>
+    <nat>
+      <port start='1024' end='65535'/>
+    </nat>
+    <interface dev='{{ kolla_external_if }}'/>
+  </forward>
+  <bridge name='virbr-ex' stp='on' delay='0'/>
+  <domain name='internal'/>
+  <ip address='172.16.0.1' netmask='255.255.0.0'>
+    <dhcp>
+      <range start='172.16.0.3' end='172.16.255.254'/>
+    </dhcp>
+  </ip>
+</network>
