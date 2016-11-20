@@ -2,4 +2,4 @@
 localhost ansible_connection=local
 
 [sut]
-192.168.100.158 ansible_user=root ansible_ssh_pass=Ebcroot1
+192.168.100.158 ansible_user=root
