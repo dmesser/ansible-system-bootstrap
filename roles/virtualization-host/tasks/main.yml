@@ -11,6 +11,8 @@
         - qemu-kvm
         - virt-manager
         - virt-install
+        - libguestfs-tools
+        - libguestfs-bash-completion
 
 - name: start and enable libvirtd
   service: name=libvirtd state=started enabled=yes
