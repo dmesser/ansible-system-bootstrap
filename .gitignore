@@ -3,3 +3,4 @@ roles/ceph.ceph-mon
 roles/ceph.ceph-osd
 fetch/
 .project
+plugins/
