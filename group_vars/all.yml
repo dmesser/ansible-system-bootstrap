@@ -1,5 +1,6 @@
 pool_default_size: 2
 journal_size: 1000
+pool_default_pg_num: 64
 monitor_interface: "{{ ansible_default_ipv4.interface }}"
 monitor_address: "{{ ansible_default_ipv4.address }}"
 public_network: "{{ ansible_default_ipv4.network }}/24"
