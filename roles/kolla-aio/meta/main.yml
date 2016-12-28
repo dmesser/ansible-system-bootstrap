@@ -1,6 +1,6 @@
 ---
 
 dependencies:
-	- { role: virtualization-host }
+  - { role: virtualization-host }
 
 ...

@@ -1,0 +1,11 @@
+[Unit]
+Description=stop libvirtd
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl stop libvirtd
+ExecStop=/usr/bin/systemctl start libvirtd
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

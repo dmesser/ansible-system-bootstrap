@@ -6,5 +6,8 @@
 - include: ./installs/fedora_prerequisites.yml
   when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
 
+- name: update all packages to latest version
+  package: name=* state=latest
+
 
 ...

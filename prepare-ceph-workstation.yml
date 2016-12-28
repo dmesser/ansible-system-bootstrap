@@ -4,10 +4,10 @@
   vars:
     playbook_root: "/root"
     ceph_ansible_directory: "{{ playbook_root }}/ceph-ansible"
-    ceph_host: 192.168.100.158
-    ceph_frontend: 192.168.100.158
+    ceph_host: "{{ ansible_default_ipv4.address }}"
+    ceph_frontend: "{{ ansible_default_ipv4.address }}"
     ceph_subnet: 24
-    ceph_interface: ens3
+    ceph_interface: "{{ ansible_default_ipv4.alias }}"
     ceph_disks:
       - /dev/vdb
       - /dev/vdc
@@ -15,7 +15,7 @@
   tasks:
 
   - name: check-out ceph-ansible into {{ ceph_ansible_directory }}
-    git: 
+    git:
       repo: https://github.com/ceph/ceph-ansible.git
       dest: "{{ceph_ansible_directory}}"
       force: yes
@@ -25,14 +25,14 @@
       create: yes
       dest: "{{ceph_ansible_directory}}/ansible.cfg"
       line: "inventory = hosts"
- 
+
   - name: create ceph-ansible host inventory
     blockinfile:
       create: yes
       dest: "{{ceph_ansible_directory}}/hosts"
       block: |
         [ceph-aio-host]
-        {{ ceph_host }}
+        {{ ceph_host }} ansible_connection=local
         [mons:children]
         ceph-aio-host
         [osds:children]
