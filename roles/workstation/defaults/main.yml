@@ -1,6 +1,10 @@
 ---
 
+system_hostname: workstation
+system_fqdn: workstation.homelab
+
 workstation_primary_netif: eno1
+workstation_primary_ip4: 192.168.178.8
 workstation_primary_cidr: 192.168.178.8/24
 workstation_primary_dns: 8.8.8.8
 workstation_primary_gw: 192.168.178.1
