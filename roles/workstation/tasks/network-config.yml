@@ -13,4 +13,13 @@
 - name: disable dhcp network adapter {{ workstation_primary_netif }}
   shell: nmcli connection modify {{ workstation_primary_netif }} ipv4.method manual
 
+
+- name: set system hostname
+  hostname: name={{ system_fqdn }}
+
+- name: ensure local hostname resolution
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{ workstation_primary_ip4 }} {{ system_fqdn }}"
+
 ...

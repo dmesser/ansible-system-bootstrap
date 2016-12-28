@@ -6,7 +6,9 @@
     - perf_utilities: true
     - sublime: false
     - py_charm: false
-    - workstation_primary_cidr: "{{ ansible_default_ipv4.address }}/24"
+    - system_fqdn: kolla-aio.localhost
+    - workstation_primary_ip4: "{{ ansible_default_ipv4.address }}"
+    - workstation_primary_cidr: "{{ workstation_primary_ip4 }}/24"
     - workstation_primary_gw: "{{ ansible_default_ipv4.gateway }}"
     - workstation_primary_netif: "{{ ansible_default_ipv4.alias }}"
     - ansible_playbook_root: /home/dmesser/Documents
@@ -23,8 +25,8 @@
         - { name: virtualization-host, tags: virtualization-host }
         - { name: workstation, tags: workstation }
         - { name: container-host, tags: container-host }
-        - { name: kolla-aio, tags: kolla-aio }
         - { name: ceph.ceph-mon, tags: ceph }
         - { name: ceph.ceph-osd, tags: ceph }
+        - { name: kolla-aio, tags: kolla-aio }
 
 ...

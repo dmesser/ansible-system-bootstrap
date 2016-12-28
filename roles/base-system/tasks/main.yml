@@ -13,12 +13,12 @@
       - net-tools
 
 - include: perf-utilities.yml
-  when: 
+  when:
     - perf_utilities is defined
     - perf_utilities
 
 - include: cli-environment.yml
-  when: 
+  when:
     - cli_environment is defined
     - cli_environment
 
