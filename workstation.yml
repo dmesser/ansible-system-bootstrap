@@ -6,7 +6,8 @@
     - perf_utilities: true
     - sublime: false
     - py_charm: false
-    - system_fqdn: kolla-aio.localhost
+    - system_hostname: kolla-aio
+    - system_fqdn: "kolla-aio.localdomain"
     - workstation_primary_ip4: "{{ ansible_default_ipv4.address }}"
     - workstation_primary_cidr: "{{ workstation_primary_ip4 }}/24"
     - workstation_primary_gw: "{{ ansible_default_ipv4.gateway }}"
