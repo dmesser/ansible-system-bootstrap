@@ -12,4 +12,15 @@
 
 - include: ./kolla_config.yml
 
+- meta: flush_handlers
+
+- name: run kolla prechecks
+  shell: kolla-ansible prechecks
+
+- name: download kolla images
+  shell: kolla-ansible pull
+
+- name: run kolla deployment
+  shell: kolla-ansible deploy
+
 ...
