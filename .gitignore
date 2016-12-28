@@ -4,3 +4,4 @@ roles/ceph.ceph-osd
 fetch/
 .project
 plugins/
+*.retry

@@ -1,0 +1,16 @@
+---
+
+- name: disable selinux
+  selinux: state=disabled
+
+- name: enable libvirt for containerized systemd workaround
+  service: name=libvirtd state=stopped enabled=yes
+
+- name: create stop libvirt for containerized systemd workaround
+  copy: src=stop-libvirtd.service dest=/etc/systemd/system/stop-libvirtd.service
+  notify:
+    - enable stop-libvirtd
+
+- name: reload systemd
+  shell: systemctl daemon-reload
+...

@@ -1,50 +1,17 @@
 ---
 
-- name: create local veth pair
-  copy: src=roles/kolla-aio/files/22-veth-pair.netdev dest=/etc/systemd/network/22-veth-pair.netdev
-  notify:
-    - restart systemd-networkd
+- include: ./uplink_bridge.yml
 
-- name: create bridge br0
-  copy: src=roles/kolla-aio/files/23-bridge-device.netdev dest=/etc/systemd/network/23-bridge-device.netdev
-  notify:
-    - restart systemd-networkd
+- include: ./system_config.yml
 
-- name: add veth1 end to bridge
-  copy: src=roles/kolla-aio/files/24-bridge-slave-interface.network dest=/etc/systemd/network/24-bridge-slave-interface.network
-  notify:
-    - restart systemd-networkd
+- include: ./installs/fedora_prerequisites.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
 
-- name: configure bridge networking
-  template: src=roles/kolla-aio/templates/25-bridge-network.network.j2 dest=/etc/systemd/network/25-bridge-network.network
-  notify:
-    - restart systemd-networkd
+- include: ./installs/kolla_via_pip.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
 
-- name: configure veth0 networking for automatic startup
-  template: src=roles/kolla-aio/templates/26-veth0-network.network.j2 dest=/etc/systemd/network/26-veth0-network.network
-  notify:
-    - restart systemd-networkd
+- include: ./kolla_config.yml
 
-- name: move resolv.conf to systemd-resolved
-  file: path=/etc/resolv.conf state=link src=/run/systemd/resolve/resolv.conf force=yes
-  notify:
-     - restart systemd-resolved
 
-- name: disable selinux
-  selinux: state=disabled
-
-- name: disable firewalld
-  service: name=firewalld state=stopped enabled=no
-
-- name: enable libvirt for containerized systemd workaround
-  service: name=libvirtd state=stopped enabled=yes
-
-- name: create stop libvirt for containerized systemd workaround
-  copy: src=stop-libvirtd.service dest=/etc/systemd/system/stop-libvirtd.service
-  notify:
-    - enable stop-libvirtd
-
-- name: reload systemd
-  shell: systemctl daemon-reload
 
 ...

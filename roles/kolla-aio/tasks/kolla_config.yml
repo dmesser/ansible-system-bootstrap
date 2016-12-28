@@ -1,0 +1,26 @@
+- name: create kolla config directory
+  file: path=/etc/kolla state=directory
+
+- name: create glance config directory
+  file: path=/etc/kolla/config/glance state=directory
+
+- name: create glance-api.conf
+  template: src=glance-api.conf.j2 dest=/etc/kolla/config/glance/glance-api.conf
+
+- name: create cinder config directory
+  file: path=/etc/kolla/config/cinder state=directory
+
+- name: create cinder-volume.conf
+  template: src=cinder-volume.conf.j2 dest=/etc/kolla/config/cinder/cinder-volume.conf
+
+- name: create nova config directory
+  file: path=/etc/kolla/config/nova state=directory
+
+- name: create nova-compute.conf
+  template: src=nova-compute.conf.j2 dest=/etc/kolla/config/nova/nova-compute.conf
+
+- name: create kolla config
+  template: src=globals.yml.j2 dest=/etc/kolla/globals.yml
+
+- name: copy kolla password template
+  copy: remote_src=true src=/usr/share/kolla/etc_examples/kolla/passwords.yml dest=/etc/kolla/passwords.yml force=no

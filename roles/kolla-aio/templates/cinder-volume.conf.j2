@@ -1,0 +1,23 @@
+[DEFAULT]
+enabled_backends=ceph
+backup_driver = cinder.backup.drivers.ceph
+backup_ceph_conf = /etc/ceph/ceph.conf
+backup_ceph_user = cinder
+backup_ceph_chunk_size = 134217728
+backup_ceph_pool = {{ openstack_cinder_backup_pool.name }}
+backup_ceph_stripe_unit = 0
+backup_ceph_stripe_count = 0
+restore_discard_excess_bytes = true
+
+[ceph]
+rbd_ceph_conf=/etc/ceph/ceph.conf
+rbd_user=cinder
+backend_host=rbd:{{ openstack_cinder_pool.name }}
+rbd_pool={{ openstack_cinder_pool.name }}
+volume_backend_name=ceph
+volume_driver=cinder.volume.drivers.rbd.RBDDriver
+rbd_flatten_volume_from_snapshot = false
+rbd_max_clone_depth = 5
+rbd_store_chunk_size = 4
+rados_connect_timeout = -1
+glance_api_version = 2

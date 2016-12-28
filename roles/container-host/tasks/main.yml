@@ -2,4 +2,7 @@
 
 - include: "scenarios/{{ container_deployment_scenario }}.yml"
 
+- name: start docker
+  service: name=docker state=started enabled=yes
+
 ...

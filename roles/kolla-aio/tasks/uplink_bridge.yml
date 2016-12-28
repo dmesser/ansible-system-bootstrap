@@ -1,0 +1,36 @@
+---
+
+- name: create local veth pair
+  copy: src=roles/kolla-aio/files/22-veth-pair.netdev dest=/etc/systemd/network/22-veth-pair.netdev
+  notify:
+    - restart systemd-networkd
+
+- name: create bridge br0
+  copy: src=roles/kolla-aio/files/23-bridge-device.netdev dest=/etc/systemd/network/23-bridge-device.netdev
+  notify:
+    - restart systemd-networkd
+
+- name: add veth1 end to bridge
+  copy: src=roles/kolla-aio/files/24-bridge-slave-interface.network dest=/etc/systemd/network/24-bridge-slave-interface.network
+  notify:
+    - restart systemd-networkd
+
+- name: configure bridge networking
+  template: src=roles/kolla-aio/templates/25-bridge-network.network.j2 dest=/etc/systemd/network/25-bridge-network.network
+  notify:
+    - restart systemd-networkd
+
+- name: configure veth0 networking for automatic startup
+  template: src=roles/kolla-aio/templates/26-veth0-network.network.j2 dest=/etc/systemd/network/26-veth0-network.network
+  notify:
+    - restart systemd-networkd
+
+- name: move resolv.conf to systemd-resolved
+  file: path=/etc/resolv.conf state=link src=/run/systemd/resolve/resolv.conf force=yes
+  notify:
+     - restart systemd-resolved
+
+- name: disable firewalld
+  service: name=firewalld state=stopped enabled=no
+
+...
