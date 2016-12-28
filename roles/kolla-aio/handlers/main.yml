@@ -1,16 +1,12 @@
 ---
-- name: start external network bridge
-  virt_net:
-    name: external
-    state: active
 
 - name: restart systemd-networkd
   service: name=systemd-networkd state=restarted enabled=yes
 
 - name: restart systemd-resolved
-  service: name=systemd-resolved state=started enabled=yes
+  service: name=systemd-resolved state=restarted enabled=yes
 
 - name: enable stop-libvirtd
-  systemd: name=stop-libvirtd state=started enabled=yes daemon_reload=yes
+  service: name=stop-libvirtd state=started enabled=yes
 
 ...

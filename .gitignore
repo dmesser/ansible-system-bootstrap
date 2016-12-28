@@ -1,0 +1,3 @@
+roles/ceph.ceph-common
+roles/ceph.ceph-mon
+roles/ceph.ceph-osd

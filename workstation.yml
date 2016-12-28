@@ -24,5 +24,7 @@
         - { name: workstation, tags: workstation }
         - { name: container-host, tags: container-host }
         - { name: kolla-aio, tags: kolla-aio }
+        - { name: ceph.ceph-mon, tags: ceph }
+        - { name: ceph.ceph-osd, tags: ceph }
 
 ...

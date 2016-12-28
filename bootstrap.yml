@@ -1,0 +1,10 @@
+---
+
+- hosts: localhost
+
+  tasks:
+
+  - name: download ceph-ansible roles from ansible-galaxy
+    shell: ansible-galaxy install --roles-path roles -r roles.txt creates=roles/ceph.ceph-common creates=roles/ceph.ceph-mon creates=roles/ceph.ceph-mon
+
+...

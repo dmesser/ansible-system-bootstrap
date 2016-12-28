@@ -44,4 +44,7 @@
   notify:
     - enable stop-libvirtd
 
+- name: reload systemd
+  shell: systemctl daemon-reload
+
 ...

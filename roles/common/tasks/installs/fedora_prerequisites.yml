@@ -8,4 +8,3 @@
   with_items:
    - git
    - patch
-   - python2-lxml
