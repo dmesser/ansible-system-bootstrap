@@ -27,8 +27,9 @@
 
 - name: move resolv.conf to systemd-resolved
   file: path=/etc/resolv.conf state=link src=/run/systemd/resolve/resolv.conf force=yes
-  notify:
-     - restart systemd-resolved
+
+- name: start systemd-resolved
+  service: name=systemd-resolved state=started enabled=yes
 
 - name: disable firewalld
   service: name=firewalld state=stopped enabled=no

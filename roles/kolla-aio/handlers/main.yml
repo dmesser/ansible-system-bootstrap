@@ -3,10 +3,19 @@
 - name: restart systemd-networkd
   service: name=systemd-networkd state=restarted enabled=yes
 
-- name: restart systemd-resolved
-  service: name=systemd-resolved state=restarted enabled=yes
-
 - name: enable stop-libvirtd
   service: name=stop-libvirtd state=started enabled=yes
 
+- name: reload systemd
+  shell: systemctl daemon-reload
+
+- name: restart docker
+  service: name=docker state=restarted
+
+- name: reinstall python3-pip
+  shell: dnf -y reinstall python3-pip
+  when:
+    - ansible_os_family == 'RedHat'
+    - ansible_distribution == 'Fedora'
+    - ansible_distribution_version == '24'
 ...
