@@ -24,3 +24,8 @@
 
 - name: copy kolla password template
   copy: remote_src=true src=/usr/share/kolla/etc_examples/kolla/passwords.yml dest=/etc/kolla/passwords.yml force=no
+  register: kolla_passwords_empty
+
+- name: auto-generate passwords
+  shell: kolla-genpwd
+  when: kolla_passwords_empty
