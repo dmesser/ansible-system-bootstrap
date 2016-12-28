@@ -14,6 +14,8 @@
 
 - name: reinstall python3-pip
   shell: dnf -y reinstall python3-pip
+  args:
+    warn: false
   when:
     - ansible_os_family == 'RedHat'
     - ansible_distribution == 'Fedora'
