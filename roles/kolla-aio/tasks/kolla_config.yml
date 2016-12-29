@@ -13,6 +13,9 @@
 - name: copy glance keyring to glance config directory
   copy: remote_src=yes src=/etc/ceph/ceph.client.glance.keyring dest=/etc/kolla/config/glance/ceph.client.glance.keyring
 
+- name: create glance client configuration
+  ini_file: section=client.glance option=keyring value=/etc/ceph/ceph.client.glance.keyring state=present dest=/etc/kolla/config/glance/ceph.conf
+
 - name: create cinder config directory
   file: path=/etc/kolla/config/cinder state=directory
 
@@ -25,6 +28,12 @@
 - name: copy cinder keyring to cinder config directory
   copy: remote_src=yes src=/etc/ceph/ceph.client.cinder.keyring dest=/etc/kolla/config/cinder/ceph.client.cinder.keyring
 
+- name: create cinder client configuration
+  ini_file: section=client.cinder option=keyring value=/etc/ceph/ceph.client.cinder.keyring state=present dest=/etc/kolla/config/cinder/ceph.conf
+
+- name: create cinder-backuo client configuration
+  ini_file: section=client.cinder-backup option=keyring value=/etc/ceph/ceph.client.cinder-backup.keyring state=present dest=/etc/kolla/config/cinder/ceph.conf
+
 - name: create nova config directory
   file: path=/etc/kolla/config/nova state=directory
 
@@ -36,6 +45,9 @@
 
 - name: copy cinder keyring to nova config directory
   copy: remote_src=yes src=/etc/ceph/ceph.client.cinder.keyring dest=/etc/kolla/config/nova/ceph.client.cinder.keyring
+
+- name: create cinder client configuration for nova
+  ini_file: section=client.cinder option=keyring value=/etc/ceph/ceph.client.cinder.keyring state=present dest=/etc/kolla/config/nova/ceph.conf
 
 - name: create kolla config
   template: src=globals.yml.j2 dest=/etc/kolla/globals.yml
