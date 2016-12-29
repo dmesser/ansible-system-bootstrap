@@ -7,17 +7,35 @@
 - name: create glance-api.conf
   template: src=glance-api.conf.j2 dest=/etc/kolla/config/glance/glance-api.conf
 
+- name: copy ceph.conf to glance config directory
+  copy: remote_src=yes src=/etc/ceph/ceph.conf dest=/etc/kolla/config/glance/ceph.conf
+
+- name: copy glance keyring to glance config directory
+  copy: remote_src=yes src=/etc/ceph/ceph.client.glance.keyring dest=/etc/kolla/config/glance/ceph.client.glance.keyring
+
 - name: create cinder config directory
   file: path=/etc/kolla/config/cinder state=directory
 
 - name: create cinder-volume.conf
   template: src=cinder-volume.conf.j2 dest=/etc/kolla/config/cinder/cinder-volume.conf
 
+- name: copy ceph.conf to cinder config directory
+  copy: remote_src=yes src=/etc/ceph/ceph.conf dest=/etc/kolla/config/cinder/ceph.conf
+
+- name: copy cinder keyring to cinder config directory
+  copy: remote_src=yes src=/etc/ceph/ceph.client.cinder.keyring dest=/etc/kolla/config/cinder/ceph.client.cinder.keyring
+
 - name: create nova config directory
   file: path=/etc/kolla/config/nova state=directory
 
 - name: create nova-compute.conf
   template: src=nova-compute.conf.j2 dest=/etc/kolla/config/nova/nova-compute.conf
+
+- name: copy ceph.conf to nova config directory
+  copy: remote_src=yes src=/etc/ceph/ceph.conf dest=/etc/kolla/config/nova/ceph.conf
+
+- name: copy cinder keyring to nova config directory
+  copy: remote_src=yes src=/etc/ceph/ceph.client.cinder.keyring dest=/etc/kolla/config/nova/ceph.client.cinder.keyring
 
 - name: create kolla config
   template: src=globals.yml.j2 dest=/etc/kolla/globals.yml
