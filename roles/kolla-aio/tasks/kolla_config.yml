@@ -25,13 +25,22 @@
 - name: copy ceph.conf to cinder config directory
   copy: remote_src=yes src=/etc/ceph/ceph.conf dest=/etc/kolla/config/cinder/ceph.conf
 
-- name: copy cinder keyring to cinder config directory
-  copy: remote_src=yes src=/etc/ceph/ceph.client.cinder.keyring dest=/etc/kolla/config/cinder/ceph.client.cinder.keyring
+- name: create cinder-volume config directory
+  file: path=/etc/kolla/config/cinder/cinder-volume state=directory
+
+- name: create cinder-backup config directory
+  file: path=/etc/kolla/config/cinder/cinder-backup state=directory
+
+- name: copy cinder keyring to cinder-volume config directory
+  copy: remote_src=yes src=/etc/ceph/ceph.client.cinder.keyring dest=/etc/kolla/config/cinder/cinder-volume/ceph.client.cinder.keyring
+
+- name: copy cinder keyring to cinder-backup config directory
+  copy: remote_src=yes src=/etc/ceph/ceph.client.cinder.keyring dest=/etc/kolla/config/cinder/cinder-backup/ceph.client.cinder.keyring
 
 - name: create cinder client configuration
   ini_file: section=client.cinder option=keyring value=/etc/ceph/ceph.client.cinder.keyring state=present dest=/etc/kolla/config/cinder/ceph.conf
 
-- name: create cinder-backuo client configuration
+- name: create cinder-backup client configuration
   ini_file: section=client.cinder-backup option=keyring value=/etc/ceph/ceph.client.cinder-backup.keyring state=present dest=/etc/kolla/config/cinder/ceph.conf
 
 - name: create nova config directory
