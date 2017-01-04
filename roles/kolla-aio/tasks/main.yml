@@ -20,7 +20,7 @@
 - name: download kolla images
   shell: kolla-ansible pull
 
-#- name: run kolla deployment
-#  shell: kolla-ansible deploy
+- name: run kolla deployment
+  shell: kolla-ansible deploy
 
 ...
