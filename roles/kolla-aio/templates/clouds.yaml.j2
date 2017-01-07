@@ -1,0 +1,12 @@
+clouds:
+  kolla:
+    region_name: RegionOne
+    auth:
+      username: 'admin'
+      password: '{{ keystone_admin_password }}'
+      project_name: 'admin'
+      tenant_name: 'admin'
+      user_domain_name: 'default'
+      project_domain_name: 'default'
+      auth_url: 'http://{{ workstation_primary_ip4 }}:35357/v3'
+    identity_api_version: 3

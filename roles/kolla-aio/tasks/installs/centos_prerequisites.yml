@@ -10,12 +10,6 @@
     - python-docker-py
     - ansible
 
-- name: install openstack clients on centos
-  package: name={{ item }} state=present
-  with_items:
-    - python-openstackclient
-    - python-neutronclient
-
 - name: create kolla docker config directory
   file: path=/etc/systemd/system/docker.service.d state=directory
 
@@ -34,11 +28,16 @@
 - name: create systemd network directory
   file: path=/etc/systemd/network state=directory
 
-- name: enable delorean repositories on CentOS
-  yum_repository:
-    name: RDO
-    description: RDO Delorean for CentOS {{ ansible_distribution_major_version }}
-    baseurl: https://trunk.rdoproject.org/centos{{ ansible_distribution_major_version }}/
-    gpgkey: https://raw.githubusercontent.com/rdo-infra/rdo-release/newton-rdo/RPM-GPG-KEY-CentOS-SIG-Cloud
-    gpgcheck: yes
+- name: enable openstack repositories on centos
+  package: name=centos-release-openstack state=present
+
+- name: install openstack clients on centos
+  package: name={{ item }} state=present
+  with_items:
+    - python-openstackclient
+    - python-neutronclient
+
+- name: install shade via pip
+  pip: name=shade state=present
+
 ...

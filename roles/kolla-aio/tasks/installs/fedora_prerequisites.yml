@@ -27,4 +27,8 @@
   notify:
     - reload systemd
     - restart docker
+
+- name: install shade via pip
+  pip: name=kolla state=present
+
 ...

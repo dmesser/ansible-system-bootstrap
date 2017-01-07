@@ -1,0 +1,47 @@
+---
+
+- name: fetch kolla passwords into fetch directory
+  fetch: src=/etc/kolla/passwords.yml dest=fetch
+
+- name: load openstack credentials from kolla config
+  include_vars: fetch/passwords.yml
+
+- name: create os client config directory
+  file: path=/etc/openstack state=directory
+
+- name: create os client config
+  template: src=clouds.yaml.j2 dest=/etc/openstack/clouds.yaml
+
+- name: create external uplink network
+  os_network:
+    cloud: kolla
+    name: external-net
+    external: yes
+    shared: yes
+    provider_network_type: flat
+    provider_physical_network: physnet1
+
+- name: create external uplink subnet
+  os_subnet:
+    cloud: kolla
+    name: external-subnet
+    network_name: external-net
+    cidr: "{{ kolla_external_cidr }}"
+    dns_nameservers:
+      - 8.8.8.8
+      - 8.8.4.4
+    enable_dhcp: yes
+    allocation_pool_start: "{{ kolla_external_pool_start }}"
+    allocation_pool_end: "{{ kolla_external_pool_end }}"
+    gateway_ip: "{{ kolla_external_bridge_ip }}"
+
+- name: check if ceph cinder volume type exists
+  shell:
+    cmd: "openstack --os-cloud=kolla volume type list --format value | grep ceph"
+  failed_when: false
+  register: ceph_type_key
+
+- name: create cinder volume type for ceph
+  shell: openstack --os-cloud=kolla volume type create --property volume_backend_name=ceph ceph
+  when: ceph_type_key.rc == 1
+...

@@ -16,13 +16,8 @@
 
 - meta: flush_handlers
 
-- name: run kolla prechecks
-  shell: kolla-ansible prechecks
+- include: ./kolla_deploy.yml
 
-- name: download kolla images
-  shell: kolla-ansible pull
-
-- name: run kolla deployment
-  shell: kolla-ansible deploy
+- include: ./openstack_bootstrap.yml
 
 ...
