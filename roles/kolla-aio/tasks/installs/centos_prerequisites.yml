@@ -1,0 +1,44 @@
+---
+- name: install kolla dependencies on centos
+  package: name={{ item }} state=present
+  with_items:
+    - python-pip
+    - python-devel
+    - libffi-devel
+    - gcc
+    - openssl-devel
+    - python-docker-py
+    - ansible
+
+- name: install openstack clients on centos
+  package: name={{ item }} state=present
+  with_items:
+    - python-openstackclient
+    - python-neutronclient
+
+- name: create kolla docker config directory
+  file: path=/etc/systemd/system/docker.service.d state=directory
+
+- name: ensure MountFlags on docker
+  copy: src=kolla.conf dest=/etc/systemd/system/docker.service.d/kolla.conf
+  notify:
+    - reload systemd
+    - restart docker
+
+- name: install systemd-networkd
+  package: name=systemd-networkd state=present
+
+- name: install systemd-resolved
+  package: name=systemd-resolved state=present
+
+- name: create systemd network directory
+  file: path=/etc/systemd/network state=directory
+
+- name: enable delorean repositories on CentOS
+  yum_repository:
+    name: RDO
+    description: RDO Delorean for CentOS {{ ansible_distribution_major_version }}
+    baseurl: https://trunk.rdoproject.org/centos{{ ansible_distribution_major_version }}/
+    gpgkey: https://raw.githubusercontent.com/rdo-infra/rdo-release/newton-rdo/RPM-GPG-KEY-CentOS-SIG-Cloud
+    gpgcheck: yes
+...

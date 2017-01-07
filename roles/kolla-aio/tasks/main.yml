@@ -7,8 +7,10 @@
 - include: ./installs/fedora_prerequisites.yml
   when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
 
+- include: ./installs/centos_prerequisites.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution == "CentOS"
+
 - include: ./installs/kolla_via_pip.yml
-  when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
 
 - include: ./kolla_config.yml
 
