@@ -3,8 +3,14 @@
 - include: ../installs/docker_on_fedora.yml
   when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
 
+- include: ../installs/docker_on_centos.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution == "CentOS"
+
 
 - include: ../installs/btrfs_on_fedora.yml
   when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
+
+- include: ../installs/btrfs_on_centos.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution == "CentOS"
 
 ...
