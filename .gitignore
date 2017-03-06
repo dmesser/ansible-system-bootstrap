@@ -1,3 +1,4 @@
+roles/ceph.ceph-docker-common
 roles/ceph.ceph-common
 roles/ceph.ceph-mon
 roles/ceph.ceph-osd
