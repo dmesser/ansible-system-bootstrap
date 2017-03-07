@@ -10,7 +10,6 @@
       - iotop
       - iftop
       - tcpdump
-      - nmon
       - numactl
       - strace
       - blktrace
