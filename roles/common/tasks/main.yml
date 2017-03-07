@@ -1,7 +1,7 @@
 ---
 
 - include: ./installs/rhel_prerequisites.yml
-  when: ansible_os_family == "RedHat" and ansible_distribution == "RHEL"
+  when: ansible_os_family == "RedHat" and ansible_distribution == "RedHat"
 
 - include: ./installs/centos_prerequisites.yml
   when: ansible_os_family == "RedHat" and ansible_distribution == "CentOS"
@@ -11,6 +11,8 @@
 
 - name: update all packages to latest version
   package: name=* state=latest
+  tags:
+    - updated
 
 
 ...
