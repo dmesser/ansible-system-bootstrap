@@ -1,4 +1,4 @@
 journal_collocation: true
 devices:
-  - /dev/vdb
-  - /dev/vdc
+  - /dev/sda
+  - /dev/sdb
