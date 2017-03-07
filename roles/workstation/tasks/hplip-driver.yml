@@ -1,6 +1,0 @@
----
-
-- name: install hplib
-  package: name=hplip state=present
-
-...
