@@ -1,19 +1,9 @@
 ---
 
-- hosts: sut
+- hosts: workstation
   vars:
-    - cli_environment: true
-    - perf_utilities: true
-    - sublime: false
-    - py_charm: false
-    - system_hostname: kolla-aio
-    - system_fqdn: "kolla-aio.localdomain"
-    - workstation_primary_ip4: "{{ ansible_default_ipv4.address }}"
-    - workstation_primary_cidr: "{{ workstation_primary_ip4 }}/24"
-    - workstation_primary_gw: "{{ ansible_default_ipv4.gateway }}"
-    - workstation_primary_netif: "{{ ansible_default_ipv4.alias }}"
-    - container_deployment_scenario: docker_on_btrfs
-    - btrfs_docker_device: /dev/vdd
+    - container_deployment_scenario: docker_on_devicemapper_vg
+    - dm_docker_vg: vg_nvme
     - kolla_host: "{{ ansible_default_ipv4.address }}"
     - kolla_external_bridge_cidr: 192.168.200.1/24
     - kolla_external_veth_cidr: 192.168.200.2/24

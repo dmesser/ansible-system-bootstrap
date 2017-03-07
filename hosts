@@ -1,8 +1,8 @@
-[sut]
-192.168.100.217 ansible_user=root
+[workstation]
+192.168.178.8 ansible_user=root
 
 [mons:children]
-sut
+workstation
 
 [osds:children]
-sut
+workstation
