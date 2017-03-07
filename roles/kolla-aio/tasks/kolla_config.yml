@@ -67,4 +67,4 @@
 
 - name: auto-generate passwords
   shell: kolla-genpwd
-  when: kolla_passwords_empty
+  when: kolla_passwords_empty.changed
