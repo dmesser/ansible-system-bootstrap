@@ -1,0 +1,39 @@
+---
+
+- name: enable device mapper docker storage setup
+  lineinfile: dest=/etc/sysconfig/docker-storage-setup line=STORAGE_DRIVER="devicemapper"
+  register: docker_storage_driver
+
+- name: make sure a volume group for device mapper was chosen
+  fail:
+   msg: "please choose volume group for the lv backing dockers device mapper volume"
+  when: dm_docker_vg is not defined
+
+- name: enable device mapper volume group in docker storage setup
+  lineinfile: dest=/etc/sysconfig/docker-storage-setup line=VG={{ dm_docker_vg }}
+  register: docker_vg_setting
+
+- name: set device mapper volume group size to 50G in docker storage setup
+  lineinfile: dest=/etc/sysconfig/docker-storage-setup line=DATA_SIZE=50G
+  register: docker_vg_size_setting
+
+- set_fact: foreign_docker_config=true
+  when:
+  - (docker_storage_driver.changed
+    or docker_vg_setting.changed
+    or docker_vg_size_setting.changed)
+
+- name: stop docker
+  service: name=docker state=stopped
+  when: foreign_docker_config is defined
+
+- name: remove current docker setup
+  file: name=/var/lib/docker state=absent
+  when: foreign_docker_config is defined    
+
+- name: run docker storage configurator
+  shell: docker-storage-setup
+  notify:
+    - restart docker
+
+...

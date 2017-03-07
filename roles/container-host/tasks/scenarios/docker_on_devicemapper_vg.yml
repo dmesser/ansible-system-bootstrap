@@ -1,0 +1,11 @@
+---
+
+- include: ../installs/docker_on_centos.yml
+  when:
+    - ansible_os_family == "RedHat" and (ansible_distribution == "Fedora" or ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
+
+- include: ../installs/devicemapper_vg_on_centos.yml
+  when:
+    - ansible_os_family == "RedHat" and (ansible_distribution == "Fedora" or ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
+
+...
