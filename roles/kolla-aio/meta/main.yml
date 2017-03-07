@@ -1,6 +1,7 @@
 ---
 
 dependencies:
+  - { role: common }
   - { role: virtualization-host }
   - { role: ceph.ceph-mon }
   - { role: ceph.ceph-osd }
