@@ -1,16 +1,11 @@
 ---
 
-- include: ../installs/docker_on_fedora.yml
-  when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
-
 - include: ../installs/docker_on_centos.yml
-  when: ansible_os_family == "RedHat" and ansible_distribution == "CentOS"
-
-
-- include: ../installs/devicemapper_on_fedora.yml
-  when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
+  when:
+    - ansible_os_family == "RedHat" and (ansible_distribution == "Fedora" or ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
 
 - include: ../installs/devicemapper_on_centos.yml
-  when: ansible_os_family == "RedHat" and ansible_distribution == "CentOS"
+  when:
+    - ansible_os_family == "RedHat" and (ansible_distribution == "Fedora" or ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
 
 ...
