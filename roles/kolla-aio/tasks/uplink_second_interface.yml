@@ -1,0 +1,13 @@
+---
+- name: configure network adapter profile for {{ kolla_external_interface }}
+  nmcli:
+    ifname: "{{ kolla_external_interface }}"
+    conn_name: "{{ kolla_external_interface }}"
+    ip4: "{{ kolla_external_interface_ip }}"
+    type: ethernet
+    state: present
+
+- name: set route metric to 101 in {{ kolla_external_interface }}
+  shell: nmcli connection modify {{ kolla_external_interface }} ipv4.route-metric 101
+
+...
