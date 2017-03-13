@@ -4,7 +4,7 @@ kolla_install_type: "binary"
 #kolla_internal_vip_address: "{{ kolla_vip }}"
 kolla_internal_vip_address: "{{ ansible_default_ipv4.address }}"
 network_interface: "{{ workstation_primary_netif }}"
-neutron_external_interface: "veth0"
+neutron_external_interface: "{{ kolla_external_interface }}"
 neutron_plugin_agent: "openvswitch"
 nova_console: "novnc"
 
