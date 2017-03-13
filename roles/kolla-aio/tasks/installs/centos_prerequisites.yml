@@ -1,43 +1,6 @@
 ---
-- name: install kolla dependencies on centos
-  package: name={{ item }} state=present
-  with_items:
-    - python-pip
-    - python-devel
-    - libffi-devel
-    - gcc
-    - openssl-devel
-    - python-docker-py
-    - ansible
-
-- name: create kolla docker config directory
-  file: path=/etc/systemd/system/docker.service.d state=directory
-
-- name: ensure MountFlags on docker
-  copy: src=kolla.conf dest=/etc/systemd/system/docker.service.d/kolla.conf
-  notify:
-    - reload systemd
-    - restart docker
-
-- name: install systemd-networkd
-  package: name=systemd-networkd state=present
-
-- name: install systemd-resolved
-  package: name=systemd-resolved state=present
-
-- name: create systemd network directory
-  file: path=/etc/systemd/network state=directory
 
 - name: enable openstack repositories on centos
   package: name=centos-release-openstack state=present
-
-- name: install openstack clients on centos
-  package: name={{ item }} state=present
-  with_items:
-    - python-openstackclient
-    - python-neutronclient
-
-- name: install shade via pip
-  pip: name=shade state=present
 
 ...
