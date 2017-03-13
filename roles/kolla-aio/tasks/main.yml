@@ -3,21 +3,42 @@
 - include: ./installs/fedora_prerequisites.yml
   when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
 
-- include: ./installs/centos_prerequisites.yml
+- include: ./installs/rhel_prerequisites.yml
   when: ansible_os_family == "RedHat" and (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
 
+- include: ./installs/centos_prerequisites.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution == "CentOS"
+
 - include: ./uplink_bridge.yml
+  when: kolla_network_scenario == virtual_interface
+  tags:
+    - kolla-prepare
+
+- include: ./uplink_second_interface.yml
+  when: kolla_network_scenario == second_interface
+  tags:
+    - kolla-prepare
 
 - include: ./system_config.yml
+  tags:
+    - kolla-prepare
 
 - include: ./installs/kolla_via_pip.yml
+  tags:
+    - kolla-install
 
 - include: ./kolla_config.yml
+  tags:
+    - kolla-config
 
 - meta: flush_handlers
 
 - include: ./kolla_deploy.yml
+  tags:
+    - kolla-deploy
 
 - include: ./openstack_bootstrap.yml
+  tags:
+    - osp-bootstrap
 
 ...
