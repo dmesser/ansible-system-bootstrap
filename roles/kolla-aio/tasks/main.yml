@@ -2,12 +2,15 @@
 
 - include: ./installs/fedora_prerequisites.yml
   when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
+  tags: kolla-prepare
 
 - include: ./installs/rhel_prerequisites.yml
   when: ansible_os_family == "RedHat" and (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
+  tags: kolla-prepare
 
 - include: ./installs/centos_prerequisites.yml
   when: ansible_os_family == "RedHat" and ansible_distribution == "CentOS"
+  tags: kolla-prepare
 
 - include: ./uplink_bridge.yml
   when: kolla_network_scenario == "virtual_interface"
