@@ -1,11 +1,15 @@
 - name: run kolla prechecks
   shell: kolla-ansible prechecks
+  tags: kolla-prechecks
 
 - name: download kolla images
   shell: kolla-ansible pull
+  tags: kolla-pull
 
 - name: run kolla deployment
   shell: kolla-ansible deploy
+  tags: kolla-deploy
 
 - name: run kolla post-deployment
   shell: kolla-ansible post-deploy
+  tags: kolla-postdeploy
