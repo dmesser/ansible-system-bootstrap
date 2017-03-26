@@ -2,10 +2,7 @@
 
 - name: restart systemd-networkd
   service: name=systemd-networkd state=restarted enabled=yes
-
-- name: enable stop-libvirtd
-  service: name=stop-libvirtd state=started enabled=yes
-
+  
 - name: reload systemd
   shell: systemctl daemon-reload
 
