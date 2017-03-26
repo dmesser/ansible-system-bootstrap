@@ -15,7 +15,7 @@
     - kolla-prepare
 
 - include: ./uplink_second_interface.yml
-  when: kolla_network_scenario == second_interface
+  when: kolla_network_scenario == "second_interface"
   tags:
     - kolla-prepare
 
