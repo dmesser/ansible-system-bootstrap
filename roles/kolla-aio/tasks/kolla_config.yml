@@ -68,3 +68,6 @@
 - name: auto-generate passwords
   shell: kolla-genpwd
   when: kolla_passwords_empty.changed
+
+- name: stop and disable hosts libvirtd
+  service: name=libvirtd state=stopped enabled=no
