@@ -43,6 +43,21 @@
 - name: create cinder-backup client configuration
   ini_file: section=client.cinder-backup option=keyring value=/etc/ceph/ceph.client.cinder-backup.keyring state=present dest=/etc/kolla/config/cinder/ceph.conf
 
+- name: create cephx nova user
+  shell: ceph auth get-or-create client.nova mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool=volumes, allow rwx pool=vms, allow rx pool=images'
+  register: nova_user_create
+
+- name: create cephx nova user keyring
+  blockinfile:
+    path: /etc/ceph/ceph.client.nova.keyring
+    create: yes
+    mode: u=rw
+    owner: ceph
+    group: ceph
+    state: present
+    block: |
+     {{ nova_user_create.stdout }}
+
 - name: create nova config directory
   file: path=/etc/kolla/config/nova state=directory
 
@@ -55,8 +70,8 @@
 - name: copy cinder keyring to nova config directory
   copy: remote_src=yes src=/etc/ceph/ceph.client.cinder.keyring dest=/etc/kolla/config/nova/ceph.client.cinder.keyring
 
-- name: copy cinder keyring as nova keyring to nova config directory to make kolla happy
-  copy: remote_src=yes src=/etc/ceph/ceph.client.cinder.keyring dest=/etc/kolla/config/nova/ceph.client.nova.keyring
+- name: copy nova keyring as nova keyring to nova config directory
+  copy: remote_src=yes src=/etc/ceph/ceph.client.nova.keyring dest=/etc/kolla/config/nova/ceph.client.nova.keyring
 
 - name: create cinder client configuration for nova
   ini_file: section=client.cinder option=keyring value=/etc/ceph/ceph.client.cinder.keyring state=present dest=/etc/kolla/config/nova/ceph.conf
