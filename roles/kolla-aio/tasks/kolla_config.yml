@@ -61,13 +61,8 @@
 - name: create kolla config
   template: src=globals.yml.j2 dest=/etc/kolla/globals.yml
 
-- name: copy kolla password template
-  copy: remote_src=true src=/usr/share/kolla/etc_examples/kolla/passwords.yml dest=/etc/kolla/passwords.yml force=no
-  register: kolla_passwords_empty
-
 - name: auto-generate passwords
-  shell: kolla-genpwd
-  when: kolla_passwords_empty.changed
+  shell: kolla-genpwd creates=/etc/kolla/passwords.yml
 
 - name: stop and disable hosts libvirtd
   service: name=libvirtd state=stopped enabled=no

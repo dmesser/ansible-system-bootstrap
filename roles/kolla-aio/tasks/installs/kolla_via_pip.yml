@@ -6,4 +6,7 @@
 - name: install kolla via pip
   pip: name=kolla state=present version={{ kolla_version }}
 
+- name: install kolla-ansible via pip
+  pip: name=kolla state=present version={{ kolla_version }}
+
 ...
