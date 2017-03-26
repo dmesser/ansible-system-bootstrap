@@ -49,7 +49,7 @@
 
 - name: create cephx nova user keyring
   blockinfile:
-    path: /etc/ceph/ceph.client.nova.keyring
+    dest: /etc/ceph/ceph.client.nova.keyring
     create: yes
     mode: u=rw
     owner: ceph
