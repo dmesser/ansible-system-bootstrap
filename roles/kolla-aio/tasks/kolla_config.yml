@@ -55,6 +55,9 @@
 - name: copy cinder keyring to nova config directory
   copy: remote_src=yes src=/etc/ceph/ceph.client.cinder.keyring dest=/etc/kolla/config/nova/ceph.client.cinder.keyring
 
+- name: copy cinder keyring as nova keyring to nova config directory to make kolla happy
+  copy: remote_src=yes src=/etc/ceph/ceph.client.cinder.keyring dest=/etc/kolla/config/nova/ceph.client.nova.keyring
+
 - name: create cinder client configuration for nova
   ini_file: section=client.cinder option=keyring value=/etc/ceph/ceph.client.cinder.keyring state=present dest=/etc/kolla/config/nova/ceph.conf
 
