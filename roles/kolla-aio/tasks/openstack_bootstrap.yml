@@ -1,7 +1,7 @@
 ---
 
 - name: fetch kolla passwords into fetch directory
-  fetch: src=/etc/kolla/passwords.yml dest=fetch/
+  fetch: src=/etc/kolla/passwords.yml dest=fetch/ flat=yes
 
 - name: load openstack credentials from kolla config
   include_vars: fetch/passwords.yml
@@ -21,7 +21,7 @@
     provider_network_type: flat
     provider_physical_network: physnet1
 
-- name: create external uplink subnet
+- name: create external uplink subnet on virtual interface
   os_subnet:
     cloud: kolla
     name: external-subnet
@@ -34,6 +34,22 @@
     allocation_pool_start: "{{ kolla_external_pool_start }}"
     allocation_pool_end: "{{ kolla_external_pool_end }}"
     gateway_ip: "{{ kolla_external_bridge_ip }}"
+  when: kolla_network_scenario == "virtual_interface"
+
+- name: create external uplink subnet on second interface
+  os_subnet:
+    cloud: kolla
+    name: external-subnet
+    network_name: external-net
+    cidr: "{{ kolla_external_bridge_cidr }}"
+    dns_nameservers:
+      - 8.8.8.8
+      - 8.8.4.4
+    enable_dhcp: no
+    allocation_pool_start: "{{ kolla_external_pool_start }}"
+    allocation_pool_end: "{{ kolla_external_pool_end }}"
+    gateway_ip: "{{ kolla_external_bridge_gateway }}"
+  when: kolla_network_scenario == "second_interface"
 
 - name: check if ceph cinder volume type exists
   shell:
