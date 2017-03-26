@@ -44,4 +44,22 @@
 - name: create cinder volume type for ceph
   shell: openstack --os-cloud=kolla volume type create --property volume_backend_name=ceph ceph
   when: ceph_type_key.rc == 1
+
+- name: create basic instance types
+  os_nova_flavor:
+    cloud: kolla
+    name: "{{ item.name }}"
+    vcpus: "{{ item.vcpus }}"
+    ram: "{{ item.ram }}"
+    disk: "{{ item.disk }}"
+    state: present
+  with_items:
+    - { name: "t2.nano", vcpus: "1", ram: "512", disk: "1" }
+    - { name: "t2.micro", vcpus: "1", ram: "1024", disk: "10" }
+    - { name: "t2.small", vcpus: "1", ram: "2048", disk: "10" }
+    - { name: "t2.normal", vcpus: "2", ram: "2048", disk: "10" }
+    - { name: "t2.medium", vcpus: "2", ram: "4096", disk: "20" }
+    - { name: "t2.large", vcpus: "2", ram: "8192", disk: "20" }
+    - { name: "t2.xlarge", vcpus: "4", ram: "16384", disk: "20" }
+    - { name: "t2.2xlarge", vcpus: "8", ram: "32768", disk: "20" }
 ...
