@@ -10,7 +10,7 @@
   when: ansible_os_family == "RedHat" and ansible_distribution == "CentOS"
 
 - include: ./uplink_bridge.yml
-  when: kolla_network_scenario == virtual_interface
+  when: kolla_network_scenario == "virtual_interface"
   tags:
     - kolla-prepare
 
