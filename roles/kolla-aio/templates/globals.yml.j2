@@ -1,6 +1,7 @@
 ---
 kolla_base_distro: "centos"
 kolla_install_type: "binary"
+openstack_version: "{{ kolla_version }}"
 #kolla_internal_vip_address: "{{ kolla_vip }}"
 kolla_internal_vip_address: "{{ ansible_default_ipv4.address }}"
 network_interface: "{{ workstation_primary_netif }}"

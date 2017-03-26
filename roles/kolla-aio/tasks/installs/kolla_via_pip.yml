@@ -4,6 +4,6 @@
   pip: name=pip state=latest
 
 - name: install kolla via pip
-  pip: name=kolla state=present
+  pip: name=kolla state=present version={{ kolla_version }}
 
 ...
