@@ -34,8 +34,6 @@
 - meta: flush_handlers
 
 - include: ./kolla_deploy.yml
-  tags:
-    - kolla-deploy
 
 - include: ./openstack_bootstrap.yml
   tags:
