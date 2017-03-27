@@ -3,7 +3,7 @@
 - name: set selinux to permissive
   selinux: state=permissive policy=targeted
 
-- name: enable libvirt for containerized systemd workaround
-  service: name=libvirtd state=stopped enabled=yes
-  
+- name: stop libvirt for host
+  service: name=libvirtd state=stopped enabled=no
+
 ...
