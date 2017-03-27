@@ -55,6 +55,7 @@
     owner: ceph
     group: ceph
     state: present
+    marker: ""
     block: |
      {{ nova_user_create.stdout }}
 
@@ -67,20 +68,17 @@
 - name: copy ceph.conf to nova config directory
   copy: remote_src=yes src=/etc/ceph/ceph.conf dest=/etc/kolla/config/nova/ceph.conf
 
-- name: copy cinder keyring to nova config directory
-  copy: remote_src=yes src=/etc/ceph/ceph.client.cinder.keyring dest=/etc/kolla/config/nova/ceph.client.cinder.keyring
-
 - name: copy nova keyring as nova keyring to nova config directory
   copy: remote_src=yes src=/etc/ceph/ceph.client.nova.keyring dest=/etc/kolla/config/nova/ceph.client.nova.keyring
 
-- name: create cinder client configuration for nova
-  ini_file: section=client.cinder option=keyring value=/etc/ceph/ceph.client.cinder.keyring state=present dest=/etc/kolla/config/nova/ceph.conf
+- name: create nova client configuration for nova
+  ini_file: section=client.nova option=keyring value=/etc/ceph/ceph.client.nova.keyring state=present dest=/etc/kolla/config/nova/ceph.conf
 
 - name: create kolla config
   template: src=globals.yml.j2 dest=/etc/kolla/globals.yml
 
 - name: create empty passwords.yml
-  copy: src=/usr/share/kolla-ansible/etc_examples/kolla/passwords.yml dest= /etc/kolla/passwords.yml force=no
+  copy: src=/usr/share/kolla-ansible/etc_examples/kolla/passwords.yml dest=/etc/kolla/passwords.yml force=no
   register: passwords_empty
 
 - name: auto-generate passwords
