@@ -2,4 +2,5 @@
 images_rbd_pool={{ openstack_nova_pool.name }}
 images_type=rbd
 images_rbd_ceph_conf=/etc/ceph/ceph.conf
-rbd_user=cinder
+rbd_user=nova
+rbd_secret_uuid={{ rbd_secret_uuid }}

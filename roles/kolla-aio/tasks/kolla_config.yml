@@ -1,6 +1,23 @@
 - name: create kolla config directory
   file: path=/etc/kolla state=directory
 
+- name: create kolla config
+  template: src=globals.yml.j2 dest=/etc/kolla/globals.yml
+
+- name: create empty passwords.yml
+  copy: remote_src=yes src=/usr/share/kolla-ansible/etc_examples/kolla/passwords.yml dest=/etc/kolla/passwords.yml force=no
+  register: passwords_empty
+
+- name: auto-generate passwords
+  shell: kolla-genpwd
+  when: passwords_empty.changed
+
+- name: fetch kolla passwords into fetch directory
+  fetch: src=/etc/kolla/passwords.yml dest=fetch/ flat=yes
+
+- name: load openstack credentials from kolla config
+  include_vars: fetch/passwords.yml
+
 - name: create glance config directory
   file: path=/etc/kolla/config/glance state=directory
 
@@ -48,16 +65,15 @@
   register: nova_user_create
 
 - name: create cephx nova user keyring
-  blockinfile:
+  shell: ceph auth get client.nova > /etc/ceph/ceph.client.nova.keyring
+
+- name: create cephx nova user keyring
+  file:
     dest: /etc/ceph/ceph.client.nova.keyring
-    create: yes
     mode: u=rw
     owner: ceph
     group: ceph
-    state: present
-    marker: ""
-    block: |
-     {{ nova_user_create.stdout }}
+    state: file
 
 - name: create nova config directory
   file: path=/etc/kolla/config/nova state=directory
@@ -71,16 +87,11 @@
 - name: copy nova keyring as nova keyring to nova config directory
   copy: remote_src=yes src=/etc/ceph/ceph.client.nova.keyring dest=/etc/kolla/config/nova/ceph.client.nova.keyring
 
+- name: copy cinder keyring as nova keyring to nova config directory
+  copy: remote_src=yes src=/etc/ceph/ceph.client.cinder.keyring dest=/etc/kolla/config/nova/ceph.client.cinder.keyring
+
 - name: create nova client configuration for nova
   ini_file: section=client.nova option=keyring value=/etc/ceph/ceph.client.nova.keyring state=present dest=/etc/kolla/config/nova/ceph.conf
 
-- name: create kolla config
-  template: src=globals.yml.j2 dest=/etc/kolla/globals.yml
-
-- name: create empty passwords.yml
-  copy: src=/usr/share/kolla-ansible/etc_examples/kolla/passwords.yml dest=/etc/kolla/passwords.yml force=no
-  register: passwords_empty
-
-- name: auto-generate passwords
-  shell: kolla-genpwd
-  when: passwords_empty.changed
+- name: create cinder client configuration for nova
+  ini_file: section=client.cinder option=keyring value=/etc/ceph/ceph.client.cinder.keyring state=present dest=/etc/kolla/config/nova/ceph.conf

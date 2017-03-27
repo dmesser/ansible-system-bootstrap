@@ -11,6 +11,7 @@ restore_discard_excess_bytes = true
 
 [ceph]
 rbd_ceph_conf=/etc/ceph/ceph.conf
+rbd_secret_uuid={{ cinder_rbd_secret_uuid }}
 rbd_user=cinder
 backend_host=rbd:{{ openstack_cinder_pool.name }}
 rbd_pool={{ openstack_cinder_pool.name }}
