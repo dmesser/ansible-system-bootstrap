@@ -17,4 +17,13 @@
 - name: start and enable libvirtd
   service: name=libvirtd state=started enabled=yes
 
+- name: enable nested virtualization config for kvm_intel
+  copy: src=kvm_intel.conf dest=/etc/modprobe.d/kvm_intel.conf
+
+- name: disable reverse path filtering for L2 guests
+  sysctl: name={{ item.name }} value={{ item.value }}
+  with_items:
+    - { name: net.ipv4.conf.default.rp_filter, value: 0 }
+    - { name: net.ipv4.conf.all.rp_filter, value: 0 }
+
 ...

@@ -20,6 +20,7 @@ enable_cinder_backend_iscsi: "no"
 enable_cinder_backend_lvm: "no"
 enable_cloudkitty: "no"
 enable_congress: "no"
+enable_designate: "yes"
 enable_etcd: "no"
 enable_gnocchi: "no"
 enable_grafana: "no"
@@ -35,7 +36,7 @@ enable_mongodb: "no"
 enable_murano: "no"
 enable_multipathd: "no"
 enable_neutron_dvr: "no"
-enable_neutron_lbaas: "no"
+enable_neutron_lbaas: "yes"
 enable_neutron_qos: "no"
 enable_neutron_agent_ha: "no"
 enable_neutron_vpnaas: "no"
@@ -56,3 +57,7 @@ tempest_image_id:
 tempest_flavor_ref_id:
 tempest_public_network_id:
 tempest_floating_network_name:
+
+dns_interface: "{{ ansible_default_ipv4.address }}"
+designate_backend: "bind9"
+designate_ns_record: "openstack.lab"
