@@ -1,0 +1,9 @@
+---
+
+- name: reload systemd
+  shell: systemctl daemon-reload
+
+- name: enable nvfancontrol
+  service: name=nvfancontrol enabled=yes
+
+...

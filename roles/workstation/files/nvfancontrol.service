@@ -1,0 +1,11 @@
+[Unit]
+Description=nvfancontrol
+After=multi-user.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/gpu_fan.sh 0
+
+[Install]
+WantedBy=multi-user.target

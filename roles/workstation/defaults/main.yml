@@ -1,5 +1,7 @@
 ---
 
+nvidia_driver_version: 375.39
+
 system_hostname: workstation
 system_fqdn: "{{ system_hostname }}.lab"
 

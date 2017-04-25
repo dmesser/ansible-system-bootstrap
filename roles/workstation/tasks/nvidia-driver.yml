@@ -1,37 +1,61 @@
 ---
 
-# - name: determine current runlevel
-#   shell: systemctl is-active graphical.target
-#   register: runlevel
-#
-# - name: check current runlevel / systemd.target
-#   fail: msg="Current runlevel not suitable for nvidia driver installation, deactivate graphical environment"
-#   when: runlevel.stdout == 'active'
-#
-# - name: install nvdia driver pre-requisites packages
-#   yum: name={{ item }} state=present
-#   with_items:
-#       - kernel-devel
-#       - kernel-headers
-#       - gcc
-#       - dkms
-#       - acpid
-#
-# - name: remove noveau driver
-#   yum: name=xorg-x11-drv-nouveau state=absent
-#
-# - name: copy nvidia driver installer to /tmp
-#   copy: src=NVIDIA-Linux-x86_64-367.27.run dest=/tmp
-#
-# - name: run nvidia driver installer
-#   shell: /tmp/NVIDIA-Linux-x86_64-367.27 --dkms --run-nvidia-xconfig --disable-nouveau --force-update --silent
-#
-#
-# - name: install vdpau
-#   yum: name={{ item }} state=present
-#   with_items:
-#       - vdpauinfo
-#       - libva-vdpau-driver
-#       - libva-utils
+- name: determine current runlevel
+  shell: systemctl is-active graphical.target
+  register: runlevel
+
+- name: check current runlevel / systemd.target
+  fail: msg="Current runlevel not suitable for nvidia driver installation, deactivate graphical environment"
+  when: runlevel.stdout == 'active'
+
+- name: download nvidia driver
+  get_url:
+    url: "http://us.download.nvidia.com/XFree86/Linux-x86_64/{{ nvidia_driver_version }}/NVIDIA-Linux-x86_64-{{ nvidia_driver_version }}.run"
+    dest: /tmp/NVIDIA-Linux-x86_64-375.39.run
+  tags: nvidia-driver
+
+- name: install nvdia driver pre-requisites packages
+  yum: name={{ item }} state=present
+  with_items:
+      - kernel-devel
+      - kernel-headers
+      - gcc
+      - dkms
+      - acpid
+  tags: nvidia-driver
+
+- name: remove noveau driver
+  yum: name=xorg-x11-drv-nouveau state=absent
+  when: ansible_os_family == "RedHat" and ansible_distribution == "Fedora"
+  tags: nvidia-driver
+
+- name: blacklist noveau
+  copy: src=blackist-noveau.conf dest=/etc/modprobe.d/
+  tags: nvidia-driver
+
+- name: run nvidia driver installer
+  shell: /tmp/NVIDIA-Linux-x86_64-{{ nvidia_driver_version }}.run --dkms --run-nvidia-xconfig --disable-nouveau --force-update --silent
+  tags: nvidia-driver
+
+- name: configure Xorg to allow fan control
+  shell: nvidia-xconfig -a --cool-bits=4 --allow-empty-initial-configuration
+  tags: nvidia-driver
+
+- name: install nvidia gpu fan control service
+  copy: src={{ item.file }} dest={{ item.dest }}
+  with_items:
+    - { file: gpu_fan.sh, dest: /usr/local/bin }
+    - { file: nvfancontrol.service, dest: /etc/systemd/system }
+  notify:
+    - reload systemd
+    - enable nvfancontrol
+  tags: nvidia_driver
+
+- name: install vdpau
+  yum: name={{ item }} state=present
+  with_items:
+      - vdpauinfo
+      - libva-vdpau-driver
+      - libva-utils
 
 ...
